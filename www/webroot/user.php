@@ -7,6 +7,7 @@ require "../includes/database.php";
 require "../includes/request.php";
 require "../includes/template.php";
 require "../includes/validate.php";
+require "../includes/sanitize.php";
 
 ab_request_methods_assert(['GET', 'POST']);
 
@@ -15,7 +16,16 @@ function ab_render_user(array $user, array $errors): void
     require "../templates/user.php";
 }
 
-$user_id = ab_request_query_get_integer('id', 1, PHP_INT_MAX);
+$user_id = ab_request_query_get_integer('id', 0, PHP_INT_MAX);
+
+$user = [
+    "id" => 0,
+    "username" => null,
+    "first_name" => null,
+    "last_name" => null,
+    "email" => null,
+];
+
 $errors = [
     "username" => null,
     "first_name" => null,
@@ -25,12 +35,14 @@ $errors = [
 $connection = ab_database_get_connection();
 
 if (ab_request_is_method('GET')) {
-    $statement = $connection->prepare('SELECT id, username, first_name, last_name, email FROM users WHERE id = :id');
-    $statement->execute(['id' => $user_id]);
-    if ($statement->rowCount() === 0) {
-        ab_request_terminate(404);
+    if ($user_id > 0) {
+        $statement = $connection->prepare('SELECT id, username, first_name, last_name, email FROM users WHERE id = :id');
+        $statement->execute(['id' => $user_id]);
+        if ($statement->rowCount() === 0) {
+            ab_request_terminate(404);
+        }
+        $user = ab_escape_array($statement->fetch(PDO::FETCH_ASSOC));
     }
-    $user = ab_escape_array($statement->fetch(PDO::FETCH_ASSOC));
 } else {
     $user_id = ab_request_post_get_integer('id', 0, PHP_INT_MAX);
     $user = ab_request_get_post_parameters([
@@ -41,14 +53,35 @@ if (ab_request_is_method('GET')) {
     ]);
     $user['id'] = $user_id;
 
+    $user['username'] = ab_sanitize_username($user['username']);
+    $user['first_name'] = ab_sanitize_name($user['first_name']);
+    $user['last_name'] = ab_sanitize_name($user['last_name']);
+    $user['email'] = ab_sanitize_email($user['email']);
+
     $errors['username'] = ab_validate_username($user['username'], 'Username');
     $errors['first_name'] = ab_validate_name($user['first_name'], 'First Name');
     $errors['last_name'] = ab_validate_name($user['last_name'], 'Last Name');
     $errors['email'] = ab_validate_email($user['email'], 'Email');
 
+    if (!isset($errors['username']) && !ab_database_is_unique_username($connection, $user['username'], $user_id)) {
+        $errors['username'] = 'Username already exists';
+    }
+    if (!isset($errors['email']) && !ab_database_is_unique_email($connection, $user['email'], $user_id)) {
+        $errors['email'] = 'Email already exists';
+    }
+    if (!isset($errors['first_name']) && !isset($errors['last_name']) && !ab_database_is_unique_name($connection, $user['first_name'], $user['last_name'], $user_id)) {
+        $errors['first_name'] = 'First name and last name already exists';
+        $errors['last_name'] = 'First name and last name already exists';
+    }
+
     if (!ab_validate_has_errors($errors)) {
-        $statement = $connection->prepare('UPDATE users SET username = :username, first_name = :first_name, last_name = :last_name, email = :email WHERE id = :id');
-        $statement->bindValue('id', $user['id'], PDO::PARAM_INT);
+        if ($user_id > 0) {
+            $statement = $connection->prepare('UPDATE users SET username = :username, first_name = :first_name, last_name = :last_name, email = :email WHERE id = :id');
+            $statement->bindValue('id', $user['id'], PDO::PARAM_INT);
+        } else {
+            $statement = $connection->prepare('INSERT INTO users (username, first_name, last_name, email) VALUES (:username, :first_name, :last_name, :email);');
+        }
+
         $statement->bindValue('username', $user['username'], PDO::PARAM_STR);
         $statement->bindValue('first_name', $user['first_name'], PDO::PARAM_STR);
         $statement->bindValue('last_name', $user['last_name'], PDO::PARAM_STR);

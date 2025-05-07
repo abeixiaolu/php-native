@@ -59,3 +59,14 @@
    4. add `$errors` array to the template, use `isset` to check if the errors exist
    5. add `ab_validate_has_errors` to check if the errors exist
    6. update data to database
+
+## part 4
+
+1. php version must be 8.4 or later, then you can use `mb_trim` method
+2. create `sanitize.php` to sanitize the user post data
+3. config nginx rewrite to make user.php can as create user page
+4. if user_id === 0, it's user creation
+5. check username is unique
+6. check first_name and last_name is unique
+7. check email is unique
+8. mysql query comparison is not sensitive
