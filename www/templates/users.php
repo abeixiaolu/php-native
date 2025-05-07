@@ -20,19 +20,20 @@
             </tr>
         </thead>
         <tbody>
-            <?php while ($user = $statement->fetch(PDO::FETCH_ASSOC)): ?>
+            <?php foreach ($users as $user): ?>
+                <?php extract($user, EXTR_OVERWRITE | EXTR_PREFIX_ALL, 'user'); ?>
                 <tr>
-                    <td><?= htmlspecialchars($user['id']); ?></td>
+                    <td><?= $user_id; ?></td>
                     <td>
-                        <a href="/user/<?= htmlspecialchars($user['id']); ?>">
-                            <?= htmlspecialchars($user['username']); ?>
+                        <a href="/user/<?= $user_id; ?>">
+                            <?= $user_username; ?>
                         </a>
                     </td>
-                    <td><?= htmlspecialchars($user['first_name']); ?></td>
-                    <td><?= htmlspecialchars($user['last_name']); ?></td>
-                    <td><?= htmlspecialchars($user['email']); ?></td>
+                    <td><?= $user_first_name; ?></td>
+                    <td><?= $user_last_name; ?></td>
+                    <td><?= $user_email; ?></td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
 </body>

@@ -42,3 +42,20 @@
    1. if the user does not exist, return a 404 error
    2. else return data
 6. render `templates/user.php`, pretty the user form
+
+## part 3
+
+1. do not expose $statement to the template scope, use `$statement -> fetchAll` to get the data
+2. use `extract` to transform the array to variables in the template
+3. add `ab_request_methods_assert` to allow multiple methods in user.php
+4. add `ab_request_is_method` to check the request method, distinguish between GET and POST
+5. handling post data
+   1. use `filter_input_array` to filter the post data, create a method `ab_request_get_post_parameters`
+   2. set `id` in the hidden input field
+   3. create `validate.php` to validate the post data
+      - `mb_strlen` to get string length
+      - `preg_match` to check the string format
+      - `filter_var` to check the email format
+   4. add `$errors` array to the template, use `isset` to check if the errors exist
+   5. add `ab_validate_has_errors` to check if the errors exist
+   6. update data to database

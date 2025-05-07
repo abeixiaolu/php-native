@@ -5,8 +5,9 @@ declare(strict_types=1);
 require("../includes/errors.php");
 require("../includes/database.php");
 require("../includes/request.php");
+require("../includes/template.php");
 
-function ab_render_users(PDOStatement $statement): void
+function ab_render_users(array $users): void
 {
   require("../templates/users.php");
 }
@@ -17,6 +18,6 @@ $connection = ab_database_get_connection();
 
 $statement = $connection->prepare('SELECT id, username, first_name, last_name, email FROM users');
 $statement->execute();
+$users = ab_escape_array_of_arrays($statement->fetchAll(PDO::FETCH_ASSOC));
 
-ab_render_users($statement);
-?>
+ab_render_users($users);

@@ -1,10 +1,12 @@
 :root {
   --primary-color: #8ebf9d;
   --secondary-color: #8d97bf;
+  --error-color: #cc8787;
   --color-bg: #121414;
   --color-bg-alt: #181d1a;
   --color-fg: #ddd;
   --color-bd: #999;
+  --rounded: 6px;
 }
 
 body {
@@ -32,6 +34,14 @@ table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid var(--color-bd);
+  position: relative;
+}
+
+thead {
+  position: sticky;
+  top: -1px;
+  background-color: var(--color-bg-alt);
+  z-index: 1;
 }
 
 th,
@@ -54,11 +64,40 @@ input[type="text"] {
   margin-top: 0.4em;
   padding: 0 0.4em;
   border: 1px solid var(--color-bd);
-  border-radius: 6px;
+  border-radius: var(--rounded);
   outline: none;
   background-color: var(--color-bg-alt);
   color: var(--color-fg);
   &:focus {
     border-color: #8ebf9d;
+  }
+}
+
+form > div.has-error {
+  input[type="text"] {
+    border-color: var(--error-color);
+  }
+  span {
+    padding-top: 0.4em;
+    display: block;
+    color: var(--error-color);
+    font-size: 0.8em;
+  }
+}
+
+button {
+  height: 32px;
+  padding: 0 0.8em;
+  text-transform: uppercase;
+  background-color: var(--primary-color);
+  outline: none;
+  border: none;
+  border-radius: var(--rounded);
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
+  &.secondary {
+    background-color: var(--color-bd);
   }
 }
