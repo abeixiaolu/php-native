@@ -70,3 +70,8 @@
 6. check first_name and last_name is unique
 7. check email is unique
 8. mysql query comparison is not sensitive
+
+## part 5
+
+1. split repeat code into header and footer
+2. implement data pagination and pager template

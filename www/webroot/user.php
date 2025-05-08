@@ -92,7 +92,9 @@ if (ab_request_is_method('GET')) {
     }
 }
 
+ab_template_render_header();
 ab_render_user($user, $errors);
+ab_template_render_footer();
 
 
 // header("Content-Type: text/plain");

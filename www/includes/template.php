@@ -12,3 +12,19 @@ function ab_escape_array_of_arrays(array $array): array
 {
     return array_map("ab_escape_array", $array);
 }
+
+
+function ab_template_render_header()
+{
+    require "../templates/header.php";
+}
+
+function ab_template_render_footer()
+{
+    require "../templates/footer.php";
+}
+
+function ab_template_render_pager($page, $total_page)
+{
+    require "../templates/pager.php";
+}
