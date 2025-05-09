@@ -81,13 +81,47 @@
 1. improve pager template, do not hard code the url
 2. add `sidebar.php` template, use `str_starts_with` to check the active url
 3. add role section
+
    1. create `roles` table
+
    ```sql
    CREATE TABLE roles (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
     name VARCHAR(32) NOT NULL UNIQUE,
     description VARCHAR(1024) NOT NULL
    );
+
+   INSERT INTO roles (name, description) VALUES
+   ('Administrator', 'Administrator role'),
+   ('User', 'User role'),
+   ('Guest', 'Guest role');
    ```
+
    2. copy `users.php` to `roles.php`
    3. copy `user.php` to `role.php`
+
+## part 6.5
+
+1. add `actions` table
+
+   ```sql
+   CREATE TABLE actions (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    name VARCHAR(32) NOT NULL UNIQUE,
+    description VARCHAR(1024) NOT NULL
+   );
+
+   INSERT INTO actions (name, description) VALUES
+   ('CreateUser', 'Create User'),
+   ('ReadUser', 'Read User'),
+   ('UpdateUser', 'Update User'),
+   ('DeleteUser', 'Delete User'),
+   ('CreateRole', 'Create Role'),
+   ('ReadRole', 'Read Role'),
+   ('UpdateRole', 'Update Role'),
+   ('DeleteRole', 'Delete Role'),
+   ('CreateAction', 'Create Action'),
+   ('ReadAction', 'Read Action'),
+   ('UpdateAction', 'Update Action'),
+   ('DeleteAction', 'Delete Action');
+   ```

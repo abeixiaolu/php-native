@@ -15,5 +15,9 @@ function ab_is_active($path)
             <a href="/roles">Roles</a>
             <a href="/role/add">+</a>
         </li>
+        <li class="<?= ab_is_active('/action'); ?>">
+            <a href="/actions">Actions</a>
+            <a href="/action/add">+</a>
+        </li>
     </ul>
 </div>

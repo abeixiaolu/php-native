@@ -106,3 +106,23 @@ function ab_validate_description(string $description, string $field_name): ?stri
 
     return null;
 }
+
+
+function ab_validate_actionname(string $name, string $field_name): ?string
+{
+    $length = mb_strlen($name);
+
+    if ($length === 0) {
+        return "$field_name is required";
+    }
+
+    if ($length < 4 || $length > 32) {
+        return "$field_name must be between 4 and 32 characters";
+    }
+
+    if (preg_match("/^[[:alpha:]]+$/u", $name) !== 1) {
+        return "$field_name must contain only letters";
+    }
+
+    return null;
+}

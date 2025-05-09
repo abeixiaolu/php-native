@@ -40,3 +40,10 @@ function ab_database_is_unique_rolename(PDO $connection, string $name, int $user
   $statement->execute(['name' => $name, 'id' => $user_id]);
   return $statement->fetchColumn() === 0;
 }
+
+function ab_database_is_unique_actionname(PDO $connection, string $name, int $user_id): bool
+{
+  $statement = $connection->prepare('SELECT count(*) FROM actions WHERE name = :name AND id <> :id');
+  $statement->execute(['name' => $name, 'id' => $user_id]);
+  return $statement->fetchColumn() === 0;
+}
