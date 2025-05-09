@@ -62,7 +62,7 @@ if (ab_request_is_method('GET')) {
             $statement = $connection->prepare('UPDATE roles SET name = :name, description = :description WHERE id = :id');
             $statement->bindValue('id', $role['id'], PDO::PARAM_INT);
         } else {
-            $statement = $connection->prepare('INSERT INTO roles (name, description) VALUES (:name, :first_name);');
+            $statement = $connection->prepare('INSERT INTO roles (name, description) VALUES (:name, :description);');
         }
 
         $statement->bindValue('name', $role['name'], PDO::PARAM_STR);
