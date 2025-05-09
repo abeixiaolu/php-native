@@ -93,6 +93,7 @@ if (ab_request_is_method('GET')) {
 }
 
 ab_template_render_header();
+ab_template_render_sidebar();
 ab_render_user($user, $errors);
 ab_template_render_footer();
 

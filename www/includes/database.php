@@ -33,3 +33,10 @@ function ab_database_is_unique_email(PDO $connection, string $email, int $user_i
   $statement->execute(['email' => $email, 'id' => $user_id]);
   return $statement->fetchColumn() === 0;
 }
+
+function ab_database_is_unique_rolename(PDO $connection, string $name, int $user_id): bool
+{
+  $statement = $connection->prepare('SELECT count(*) FROM roles WHERE name = :name AND id <> :id');
+  $statement->execute(['name' => $name, 'id' => $user_id]);
+  return $statement->fetchColumn() === 0;
+}

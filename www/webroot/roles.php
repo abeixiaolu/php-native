@@ -7,9 +7,9 @@ require("../includes/database.php");
 require("../includes/request.php");
 require("../includes/template.php");
 
-function ab_render_users(array $users, int $page, int $page_size, int $total_page, string $url): void
+function ab_render_roles(array $roles, int $page, int $page_size, int $total_page, string $url): void
 {
-  require("../templates/users.php");
+  require("../templates/roles.php");
 }
 
 ab_request_method_assert('GET');
@@ -18,7 +18,7 @@ $page_size = ab_request_query_get_integer('size', 1, PHP_INT_MAX, 10);
 
 $connection = ab_database_get_connection();
 
-$statement = $connection->query('SELECT COUNT(*) FROM users;');
+$statement = $connection->query('SELECT COUNT(*) FROM roles;');
 $total_count = $statement->fetchColumn();
 $total_page = intval(ceil($total_count / $page_size));
 
@@ -26,13 +26,13 @@ if ($page > $total_page) {
   ab_request_terminate(400);
 }
 
-$statement = $connection->prepare('SELECT id, username, first_name, last_name, email FROM users LIMIT :offset, :limit;');
+$statement = $connection->prepare('SELECT id, name, description FROM roles LIMIT :offset, :limit;');
 $statement->bindValue(':offset', ($page - 1) * $page_size, PDO::PARAM_INT);
 $statement->bindValue(':limit', $page_size, PDO::PARAM_INT);
 $statement->execute();
-$users = ab_escape_array_of_arrays($statement->fetchAll(PDO::FETCH_ASSOC));
+$roles = ab_escape_array_of_arrays($statement->fetchAll(PDO::FETCH_ASSOC));
 
 ab_template_render_header();
 ab_template_render_sidebar();
-ab_render_users($users, $page, $page_size, $total_page, "/users");
+ab_render_roles($roles, $page, $page_size, $total_page, "/roles");
 ab_template_render_footer();

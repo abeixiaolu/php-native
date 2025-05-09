@@ -1,21 +1,63 @@
+@import "./reset.css";
+
 :root {
   --primary-color: #8ebf9d;
   --secondary-color: #8d97bf;
   --error-color: #cc8787;
-  --color-bg: #121414;
-  --color-bg-alt: #181d1a;
+  --color-bg: #181d1a;
+  --color-bg-alt: #121414;
   --color-fg: #ddd;
   --color-bd: #999;
   --rounded: 6px;
 }
 
 body {
-  max-width: 50em;
+  display: flex;
+  gap: 20px;
+  max-width: 60em;
   font-family: sans-serif;
   margin: 0 auto;
   padding: 1em;
   background-color: var(--color-bg);
   color: var(--color-fg);
+}
+
+.sidebar {
+  flex: 0 0 200px;
+  padding: 1em;
+  background-color: var(--color-bg-alt);
+  border-radius: var(--rounded);
+  ul {
+    list-style: none;
+    li {
+      padding: 0.2em 1em;
+      border-radius: var(--rounded);
+      margin: 0.4em 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &.active {
+        background-color: var(--primary-color);
+        a {
+          color: var(--color-bg);
+        }
+      }
+      a {
+        color: var(--color-fg);
+        &:last-child {
+          font-size: 1.5em;
+          margin-bottom: 2px;
+        }
+      }
+    }
+  }
+}
+
+main {
+  flex: 1;
+  padding: 1em;
+  border-radius: var(--rounded);
+  background-color: var(--color-bg-alt);
 }
 
 a {

@@ -75,3 +75,19 @@
 
 1. split repeat code into header and footer
 2. implement data pagination and pager template
+
+## part 6
+
+1. improve pager template, do not hard code the url
+2. add `sidebar.php` template, use `str_starts_with` to check the active url
+3. add role section
+   1. create `roles` table
+   ```sql
+   CREATE TABLE roles (
+    id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    name VARCHAR(32) NOT NULL UNIQUE,
+    description VARCHAR(1024) NOT NULL
+   );
+   ```
+   2. copy `users.php` to `roles.php`
+   3. copy `user.php` to `role.php`

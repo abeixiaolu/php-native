@@ -24,7 +24,12 @@ function ab_template_render_footer()
     require "../templates/footer.php";
 }
 
-function ab_template_render_pager($page, $total_page)
+function ab_template_render_pager($url, $page, $total_page)
 {
     require "../templates/pager.php";
+}
+
+function ab_template_render_sidebar()
+{
+    require "../templates/sidebar.php";
 }
