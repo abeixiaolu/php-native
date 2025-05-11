@@ -116,7 +116,7 @@ if (ab_request_is_method('GET')) {
             $statement->execute();
         }
 
-        ab_request_redirect('/users');
+        ab_request_redirect('/user/' . $user_id);
     }
 }
 

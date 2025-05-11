@@ -95,7 +95,7 @@ if (ab_request_is_method('GET')) {
             $statement->bindValue('action_id', $action_id, PDO::PARAM_INT);
             $statement->execute();
         }
-        ab_request_redirect('/roles');
+        ab_request_redirect('/role/' . $role_id);
     }
 }
 
