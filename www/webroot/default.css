@@ -163,6 +163,19 @@ button {
   }
 }
 
+button[link] {
+  height: auto;
+  text-transform: none;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: var(--secondary-color);
+  background-color: transparent;
+  border: none;
+  color: var(--secondary-color);
+  cursor: pointer;
+  padding: 0;
+}
+
 .pager {
   margin-top: 8px;
   display: flex;

@@ -104,10 +104,17 @@ if (ab_request_is_method('GET')) {
         }
     } else {
         // add role to user
-        $statement = $connection->prepare('INSERT INTO users_roles (user_id, role_id) VALUES (:user_id, :role_id)');
-        $statement->bindValue('user_id', $user_id, PDO::PARAM_INT);
-        $statement->bindValue('role_id', $role_id, PDO::PARAM_INT);
-        $statement->execute();
+        if ($_POST['action'] === 'add_role') {
+            $statement = $connection->prepare('INSERT INTO users_roles (user_id, role_id) VALUES (:user_id, :role_id)');
+            $statement->bindValue('user_id', $user_id, PDO::PARAM_INT);
+            $statement->bindValue('role_id', $role_id, PDO::PARAM_INT);
+            $statement->execute();
+        } else if ($_POST['action'] === 'delete_role') {
+            $statement = $connection->prepare('DELETE FROM users_roles WHERE user_id = :user_id AND role_id = :role_id');
+            $statement->bindValue('user_id', $user_id, PDO::PARAM_INT);
+            $statement->bindValue('role_id', $role_id, PDO::PARAM_INT);
+            $statement->execute();
+        }
 
         ab_request_redirect('/users');
     }

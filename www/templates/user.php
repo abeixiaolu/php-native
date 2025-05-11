@@ -48,6 +48,7 @@ extract($user);
                         <th>#</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,16 +59,25 @@ extract($user);
                                 <td><?= $role_id; ?></td>
                                 <td><?= $role_name; ?></td>
                                 <td><?= $role_description; ?></td>
+                                <td>
+                                    <form class="inline-form" style="margin-top: 0;" method="post">
+                                        <input type="hidden" name="action" value="delete_role">
+                                        <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                        <input type="hidden" name="role_id" value="<?= $role_id ?>">
+                                        <button link type="submit">Remove</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="3" class="empty-data">No roles assigned to this user</td>
+                            <td colspan="4" class="empty-data">No roles assigned to this user</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
             <form method="post" class="inline-form">
+                <input type="hidden" name="action" value="add_role">
                 <input type="hidden" name="id" value="<?= $user['id'] ?>">
                 <div class="inline-form-item">
                     <label for="role">Role</label>

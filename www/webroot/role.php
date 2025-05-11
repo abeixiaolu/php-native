@@ -83,12 +83,18 @@ if (ab_request_is_method('GET')) {
             ab_request_redirect('/roles');
         }
     } else {
-        // add action to role
-        $statement = $connection->prepare('INSERT INTO roles_actions (role_id, action_id) VALUES (:role_id, :action_id)');
-        $statement->bindValue('role_id', $role_id, PDO::PARAM_INT);
-        $statement->bindValue('action_id', $action_id, PDO::PARAM_INT);
-        $statement->execute();
-
+        if ($_POST['action'] === 'add_action') {
+            // add action to role
+            $statement = $connection->prepare('INSERT INTO roles_actions (role_id, action_id) VALUES (:role_id, :action_id)');
+            $statement->bindValue('role_id', $role_id, PDO::PARAM_INT);
+            $statement->bindValue('action_id', $action_id, PDO::PARAM_INT);
+            $statement->execute();
+        } else if ($_POST['action'] === 'delete_action') {
+            $statement = $connection->prepare('DELETE FROM roles_actions WHERE role_id = :role_id AND action_id = :action_id');
+            $statement->bindValue('role_id', $role_id, PDO::PARAM_INT);
+            $statement->bindValue('action_id', $action_id, PDO::PARAM_INT);
+            $statement->execute();
+        }
         ab_request_redirect('/roles');
     }
 }

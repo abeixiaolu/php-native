@@ -33,6 +33,7 @@ extract($role);
                         <th>#</th>
                         <th>Name</th>
                         <th>Description</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,16 +44,25 @@ extract($role);
                                 <td><?= $action_id; ?></td>
                                 <td><?= $action_name; ?></td>
                                 <td><?= $action_description; ?></td>
+                                <td>
+                                    <form class="inline-form" style="margin-top: 0;" method="post">
+                                        <input type="hidden" name="action" value="delete_action">
+                                        <input type="hidden" name="id" value="<?= $role['id'] ?>">
+                                        <input type="hidden" name="action_id" value="<?= $action_id ?>">
+                                        <button link type="submit">Remove</button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="3" class="empty-data">No actions assigned to this role</td>
+                            <td colspan="4" class="empty-data">No actions assigned to this role</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
             </table>
             <form method="post" class="inline-form">
+                <input type="hidden" name="action" value="add_action">
                 <input type="hidden" name="id" value="<?= $role['id'] ?>">
                 <div class="inline-form-item">
                     <label for="action">Action</label>

@@ -155,3 +155,9 @@
    ALTER TABLE roles_actions ADD FOREIGN KEY (action_id) REFERENCES actions(id);
    INSERT INTO roles_actions VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5);
    ```
+
+## part 8
+
+1. add hidden action field to distinguish between add and delete
+2. delete role for user
+3. delete action for role
