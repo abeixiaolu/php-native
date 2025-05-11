@@ -12,7 +12,7 @@
 3. create a user table in mysql
    ```sql
    CREATE TABLE users (
-     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
      first_name VARCHAR(32) NOT NULL,
      last_name VARCHAR(32) NOT NULL,
      email VARCHAR(255) NOT NULL UNIQUE,
@@ -124,4 +124,34 @@
    ('ReadAction', 'Read Action'),
    ('UpdateAction', 'Update Action'),
    ('DeleteAction', 'Delete Action');
+   ```
+
+## part 7
+
+1. create `users_roles` table
+
+   ```sql
+   CREATE TABLE users_roles (
+    user_id BIGINT UNSIGNED NOT NULL,
+    role_id BIGINT UNSIGNED NOT NULL
+   );
+   ALTER TABLE users_roles ADD UNIQUE KEY (user_id, role_id);
+   ALTER TABLE users_roles ADD FOREIGN KEY (user_id) REFERENCES users(id);
+   ALTER TABLE users_roles ADD FOREIGN KEY (role_id) REFERENCES roles(id);
+   INSERT INTO users_roles VALUES (1, 1), (1, 2);
+   ```
+
+2. show user roles in `user.php`
+3. add role to user
+4. create `roles_actions` table
+
+   ```sql
+   CREATE TABLE roles_actions (
+    role_id BIGINT UNSIGNED NOT NULL,
+    action_id BIGINT UNSIGNED NOT NULL
+   );
+   ALTER TABLE roles_actions ADD UNIQUE KEY (role_id, action_id);
+   ALTER TABLE roles_actions ADD FOREIGN KEY (role_id) REFERENCES roles(id);
+   ALTER TABLE roles_actions ADD FOREIGN KEY (action_id) REFERENCES actions(id);
+   INSERT INTO roles_actions VALUES (1, 1), (1, 2), (1, 3), (1, 4), (1, 5);
    ```

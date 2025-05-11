@@ -1,0 +1,28 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 项目结构说明
+
+本项目为 PHP 原生开发，目录结构如下：
+
+- [www/](mdc:www)：主应用目录，包含所有前端和后端相关代码。
+  - [html/](mdc:www/html)：预留的静态 HTML 文件目录，目前为空。
+  - [includes/](mdc:www/includes)：包含 PHP 工具和功能模块，如数据库、请求、校验、模板等。
+    - [request.php](mdc:www/includes/request.php)：处理请求相关逻辑。
+    - [database.php](mdc:www/includes/database.php)：数据库操作相关函数。
+    - [validate.php](mdc:www/includes/validate.php)：数据校验相关函数。
+    - [sanitize.php](mdc:www/includes/sanitize.php)：数据清洗相关函数。
+    - [template.php](mdc:www/includes/template.php)：模板处理相关函数。
+    - [errors.php](mdc:www/includes/errors.php)：错误处理相关函数。
+  - [templates/](mdc:www/templates)：页面模板片段，包含用户、角色、分页、头部、侧边栏等模板。
+    - 例如：[user.php](mdc:www/templates/user.php)、[header.php](mdc:www/templates/header.php)
+  - [webroot/](mdc:www/webroot)：Web 入口目录，包含主要的 PHP 页面和样式文件。
+    - 例如：[user.php](mdc:www/webroot/user.php)、[default.css](mdc:www/webroot/default.css)
+
+- [Dockerfile](mdc:Dockerfile)、[docker-compose.yml](mdc:docker-compose.yml)：容器化部署相关配置。
+- [nginx.conf](mdc:nginx.conf)：Nginx 配置文件。
+- [README.md](mdc:README.md)：项目说明文档。
+
+> 入口 PHP 文件一般位于 [www/webroot/](mdc:www/webroot) 目录，工具和模板分别在 [includes](mdc:www/includes) 和 [templates](mdc:www/templates) 目录下。
