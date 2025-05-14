@@ -32,3 +32,8 @@ function ab_sanitize_description(string $description): string
 {
     return mb_trim($description);
 }
+
+function ab_sanitize_password(string $password): string
+{
+    return mb_trim($password);
+}

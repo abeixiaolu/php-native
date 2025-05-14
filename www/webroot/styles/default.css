@@ -1,8 +1,9 @@
-@import "./styles/reset.css";
-@import "./styles/button.css";
-@import "./styles/table.css";
-@import "./styles/form.css";
-@import "./styles/pager.css";
+@import "./reset.css";
+@import "./button.css";
+@import "./table.css";
+@import "./form.css";
+@import "./pager.css";
+@import "./alert.css";
 
 :root {
   --primary-color: #8ebf9d;

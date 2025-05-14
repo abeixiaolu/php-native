@@ -161,3 +161,19 @@
 1. add hidden action field to distinguish between add and delete
 2. delete role for user
 3. delete action for role
+
+## part 9-10
+
+1. create `webroot/login.php`
+2. create `templates/login.php`
+3. validate and sanitize login data
+4. alter user table, add password field
+   ```sql
+   ALTER TABLE users ADD COLUMN password CHAR(60) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL;
+   ```
+5. add password to user by `password_hash`
+   ```bash
+   php -r "echo password_hash('test', PASSWORD_DEFAULT);";
+   UPDATE users SET password = '$2y$10$000000000000000000000000000000000000000000000000' WHERE id = 1;
+   ```
+6. check password by `password_verify`
