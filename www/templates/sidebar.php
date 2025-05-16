@@ -20,4 +20,8 @@ function ab_is_active($path)
             <a href="/action/add">+</a>
         </li>
     </ul>
+
+    <div class="sidebar-footer">
+        <a class="button" href="/logout">Logout</a>
+    </div>
 </div>

@@ -177,3 +177,7 @@
    UPDATE users SET password = '$2y$10$000000000000000000000000000000000000000000000000' WHERE id = 1;
    ```
 6. check password by `password_verify`
+
+## part 11-12
+
+1. add logout functionality

@@ -10,3 +10,10 @@ if ($user_id < 1 && $_SERVER['REQUEST_URI'] !== '/login') {
   header('Location: /login');
   exit();
 }
+
+function ab_logout(): void
+{
+  session_destroy();
+  header('Location: /login');
+  exit();
+}
