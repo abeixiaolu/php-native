@@ -56,7 +56,6 @@ function ab_request_post_get_integer(string $parameter_name, int $min, int $max,
     if ($value === false || $value === null) {
         ab_request_terminate(400);
     }
-
     return $value;
 }
 

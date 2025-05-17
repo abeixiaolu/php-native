@@ -1,5 +1,7 @@
 <?php
 extract($action);
+
+$can_edit = (ab_auth_is_authorized("UpdateAction") && $action['id'] > 0) || (ab_auth_is_authorized("CreateAction") && $action['id'] === 0);
 ?>
 
 <main>
@@ -20,8 +22,10 @@ extract($action);
             <?php endif ?>
         </div>
         <div>
-            <button type="submit">Submit</button>
-            <a href="/users"><button type="button" class="secondary"> Cancel</button></a>
+            <?php if ($can_edit): ?>
+                <button type="submit">Submit</button>
+            <?php endif; ?>
+            <a href="/actions"><button type="button" class="secondary">Cancel</button></a>
         </div>
     </form>
 </main>

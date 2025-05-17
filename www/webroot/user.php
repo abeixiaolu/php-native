@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require "../includes/errors.php";
 require("../includes/authentication.php");
+require("../includes/authorization.php");
 require "../includes/database.php";
 require "../includes/request.php";
 require "../includes/template.php";
@@ -39,6 +40,7 @@ $connection = ab_database_get_connection();
 
 if (ab_request_is_method('GET')) {
     if ($user_id > 0) {
+        ab_auth_assert_authorized_any(["ReadUser", "UpdateUser"]);
         $statement = $connection->prepare('SELECT id, username, first_name, last_name, email FROM users WHERE id = :id');
         $statement->execute(['id' => $user_id]);
         if ($statement->rowCount() === 0) {
@@ -53,8 +55,11 @@ if (ab_request_is_method('GET')) {
         $statement = $connection->prepare('SELECT id, name, description FROM roles WHERE id NOT IN (SELECT role_id FROM users_roles WHERE user_id = :user_id)');
         $statement->execute(['user_id' => $user_id]);
         $other_roles = $statement->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        ab_auth_assert_authorized("CreateUser");
     }
 } else {
+    ab_auth_assert_authorized_any(["CreateUser", "UpdateUser"]);
     $user_id = ab_request_post_get_integer('id', 0, PHP_INT_MAX);
     $role_id = ab_request_post_get_integer('role_id', 0, PHP_INT_MAX, 0);
     if ($role_id === 0) {
@@ -89,9 +94,11 @@ if (ab_request_is_method('GET')) {
 
         if (!ab_validate_has_errors($errors)) {
             if ($user_id > 0) {
+                ab_auth_assert_authorized("UpdateUser");
                 $statement = $connection->prepare('UPDATE users SET username = :username, first_name = :first_name, last_name = :last_name, email = :email WHERE id = :id');
                 $statement->bindValue('id', $user['id'], PDO::PARAM_INT);
             } else {
+                ab_auth_assert_authorized("CreateUser");
                 $statement = $connection->prepare('INSERT INTO users (username, first_name, last_name, email) VALUES (:username, :first_name, :last_name, :email);');
             }
 
@@ -105,6 +112,7 @@ if (ab_request_is_method('GET')) {
         }
     } else {
         // add role to user
+        ab_auth_assert_authorized("UpdateUser");
         if ($_POST['action'] === 'add_role') {
             $statement = $connection->prepare('INSERT INTO users_roles (user_id, role_id) VALUES (:user_id, :role_id)');
             $statement->bindValue('user_id', $user_id, PDO::PARAM_INT);

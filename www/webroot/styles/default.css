@@ -58,6 +58,7 @@ body {
   }
 
   ul {
+    padding-bottom: 64px;
     list-style: none;
 
     li {
@@ -107,4 +108,25 @@ h3 {
 .empty-data {
   text-align: center;
   padding: 1em;
+}
+
+.auth-error-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  padding: 1em;
+  border-radius: var(--rounded);
+  background-color: var(--color-bg-alt);
+
+  h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+  }
+
+  p {
+    font-size: 1.2em;
+  }
 }

@@ -181,3 +181,6 @@
 ## part 11-12
 
 1. add logout functionality
+2. login session add `actions`
+3. add `authorization.php` to check if the user has the permission to access the page
+4. for each page, add authorization check

@@ -1,3 +1,7 @@
+<?php
+$can_read = ab_auth_is_authorized("ReadAction");
+?>
+
 <main>
     <table>
         <thead>
@@ -13,9 +17,13 @@
                 <tr>
                     <td><?= $action_id; ?></td>
                     <td>
-                        <a href="/action/<?= $action_id; ?>">
+                        <?php if ($can_read): ?>
+                            <a href="/action/<?= $action_id; ?>">
+                                <?= $action_name; ?>
+                            </a>
+                        <?php else: ?>
                             <?= $action_name; ?>
-                        </a>
+                        <?php endif; ?>
                     </td>
                     <td><?= $action_description; ?></td>
                 </tr>

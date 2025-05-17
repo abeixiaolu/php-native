@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require "../includes/errors.php";
 require("../includes/authentication.php");
+require("../includes/authorization.php");
 require "../includes/database.php";
 require "../includes/request.php";
 require "../includes/template.php";
@@ -18,6 +19,7 @@ function ab_render_role(array $role, array $role_actions, array $other_actions, 
 }
 
 $role_id = ab_request_query_get_integer('id', 0, PHP_INT_MAX);
+
 $role_actions = [];
 $other_actions = [];
 $role = [
@@ -34,6 +36,7 @@ $connection = ab_database_get_connection();
 
 if (ab_request_is_method('GET')) {
     if ($role_id > 0) {
+        ab_auth_assert_authorized_any(["ReadRole", "UpdateRole"]);
         $statement = $connection->prepare('SELECT id, name, description FROM roles WHERE id = :id');
         $statement->execute(['id' => $role_id]);
         if ($statement->rowCount() === 0) {
@@ -48,10 +51,13 @@ if (ab_request_is_method('GET')) {
         $statement = $connection->prepare('SELECT id, name, description FROM actions WHERE id NOT IN (SELECT action_id FROM roles_actions WHERE role_id = :role_id)');
         $statement->execute(['role_id' => $role_id]);
         $other_actions = $statement->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        ab_auth_assert_authorized("CreateRole");
     }
 } else {
+    ab_auth_assert_authorized_any(["CreateRole", "UpdateRole"]);
     $role_id = ab_request_post_get_integer('id', 0, PHP_INT_MAX);
-    $action_id = ab_request_post_get_integer('action_id', 0, PHP_INT_MAX);
+    $action_id = ab_request_post_get_integer('action_id', 0, PHP_INT_MAX, 0);
     if ($action_id === 0) {
         $role = ab_request_get_post_parameters([
             'name' => FILTER_SANITIZE_SPECIAL_CHARS,
@@ -71,9 +77,11 @@ if (ab_request_is_method('GET')) {
 
         if (!ab_validate_has_errors($errors)) {
             if ($role_id > 0) {
+                ab_auth_assert_authorized("UpdateRole");
                 $statement = $connection->prepare('UPDATE roles SET name = :name, description = :description WHERE id = :id');
                 $statement->bindValue('id', $role['id'], PDO::PARAM_INT);
             } else {
+                ab_auth_assert_authorized("CreateRole");
                 $statement = $connection->prepare('INSERT INTO roles (name, description) VALUES (:name, :description);');
             }
 
@@ -84,6 +92,7 @@ if (ab_request_is_method('GET')) {
             ab_request_redirect('/roles');
         }
     } else {
+        ab_auth_assert_authorized("UpdateRole");
         if ($_POST['action'] === 'add_action') {
             // add action to role
             $statement = $connection->prepare('INSERT INTO roles_actions (role_id, action_id) VALUES (:role_id, :action_id)');

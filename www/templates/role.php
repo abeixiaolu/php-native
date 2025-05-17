@@ -1,8 +1,11 @@
 <?php
 extract($role);
+
+$can_edit = (ab_auth_is_authorized("UpdateRole") && $role['id'] > 0) || (ab_auth_is_authorized("CreateRole") && $role['id'] === 0);
 ?>
 
 <main>
+    <h3>Role Details</h3>
     <form method="post">
         <input type="hidden" name="id" value="<?= $role['id'] ?>">
         <div <?= isset($errors['name']) ? 'class="has-error"' : '' ?>>
@@ -20,8 +23,10 @@ extract($role);
             <?php endif ?>
         </div>
         <div>
-            <button type="submit">Submit</button>
-            <a href="/users"><button type="button" class="secondary"> Cancel</button></a>
+            <?php if ($can_edit): ?>
+                <button type="submit">Submit</button>
+            <?php endif; ?>
+            <a href="/roles"><button type="button" class="secondary"> Cancel</button></a>
         </div>
     </form>
     <?php if ($role['id'] > 0): ?>
@@ -49,7 +54,9 @@ extract($role);
                                         <input type="hidden" name="action" value="delete_action">
                                         <input type="hidden" name="id" value="<?= $role['id'] ?>">
                                         <input type="hidden" name="action_id" value="<?= $action_id ?>">
-                                        <button link type="submit">Remove</button>
+                                        <?php if ($can_edit): ?>
+                                            <button link type="submit">Remove</button>
+                                        <?php endif; ?>
                                     </form>
                                 </td>
                             </tr>
@@ -76,7 +83,9 @@ extract($role);
                         <?php endif; ?>
                     </select>
                 </div>
-                <button type="submit" <?= count($other_actions) === 0 ? 'disabled' : '' ?>>Add</button>
+                <?php if ($can_edit): ?>
+                    <button type="submit" <?= count($other_actions) === 0 ? 'disabled' : '' ?>>Add</button>
+                <?php endif; ?>
             </form>
         </div>
     <?php endif; ?>

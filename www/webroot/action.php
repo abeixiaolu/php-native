@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 require "../includes/errors.php";
 require("../includes/authentication.php");
+require("../includes/authorization.php");
 require "../includes/database.php";
 require "../includes/request.php";
 require "../includes/template.php";
@@ -33,14 +34,18 @@ $connection = ab_database_get_connection();
 
 if (ab_request_is_method('GET')) {
     if ($action_id > 0) {
+        ab_auth_assert_authorized_any(["ReadAction", "UpdateAction"]);
         $statement = $connection->prepare('SELECT id, name, description FROM actions WHERE id = :id');
         $statement->execute(['id' => $action_id]);
         if ($statement->rowCount() === 0) {
             ab_request_terminate(404);
         }
         $action = ab_escape_array($statement->fetch(PDO::FETCH_ASSOC));
+    } else {
+        ab_auth_assert_authorized("CreateAction");
     }
 } else {
+    ab_auth_assert_authorized_any(["CreateAction", "UpdateAction"]);
     $action_id = ab_request_post_get_integer('id', 0, PHP_INT_MAX);
     $action = ab_request_get_post_parameters([
         'name' => FILTER_SANITIZE_SPECIAL_CHARS,
@@ -60,9 +65,11 @@ if (ab_request_is_method('GET')) {
 
     if (!ab_validate_has_errors($errors)) {
         if ($action_id > 0) {
+            ab_auth_assert_authorized("UpdateAction");
             $statement = $connection->prepare('UPDATE actions SET name = :name, description = :description WHERE id = :id');
             $statement->bindValue('id', $action['id'], PDO::PARAM_INT);
         } else {
+            ab_auth_assert_authorized("CreateAction");
             $statement = $connection->prepare('INSERT INTO actions (name, description) VALUES (:name, :description);');
         }
 

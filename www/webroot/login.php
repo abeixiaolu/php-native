@@ -46,6 +46,16 @@ if (ab_request_is_method('POST')) {
             $user = $statement->fetch();
             if (password_verify($password, $user['password'])) {
                 $_SESSION["user_id"] = $user["id"];
+                $statement = $connection->prepare("SELECT DISTINCT a.name
+                    FROM   users_roles ur
+                        JOIN roles_actions ra
+                            ON ur.role_id = ra.role_id
+                        JOIN actions a
+                            ON a.id = ra.action_id
+                    WHERE  ur.user_id = :user_id; ");
+                $statement->bindValue(":user_id", $user["id"], PDO::PARAM_INT);
+                $statement->execute();
+                $_SESSION["actions"] = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
                 ab_request_redirect("/users");
             } else {
                 $auth_error = "Incorrect username or password";

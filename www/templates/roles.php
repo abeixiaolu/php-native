@@ -1,3 +1,7 @@
+<?php
+$can_read = ab_auth_is_authorized("ReadRole");
+?>
+
 <main>
     <table>
         <thead>
@@ -13,9 +17,13 @@
                 <tr>
                     <td><?= $role_id; ?></td>
                     <td>
-                        <a href="/role/<?= $role_id; ?>">
+                        <?php if ($can_read): ?>
+                            <a href="/role/<?= $role_id; ?>">
+                                <?= $role_name; ?>
+                            </a>
+                        <?php else: ?>
                             <?= $role_name; ?>
-                        </a>
+                        <?php endif; ?>
                     </td>
                     <td><?= $role_description; ?></td>
                 </tr>

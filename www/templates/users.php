@@ -1,3 +1,8 @@
+<?php
+$can_read = ab_auth_is_authorized("ReadUser");
+?>
+
+
 <main>
     <div class="table-container">
         <table>
@@ -16,9 +21,13 @@
                     <tr>
                         <td><?= $user_id; ?></td>
                         <td>
-                            <a href="/user/<?= $user_id; ?>">
+                            <?php if ($can_read): ?>
+                                <a href="/user/<?= $user_id; ?>">
+                                    <?= $user_username; ?>
+                                </a>
+                            <?php else: ?>
                                 <?= $user_username; ?>
-                            </a>
+                            <?php endif; ?>
                         </td>
                         <td><?= $user_first_name; ?></td>
                         <td><?= $user_last_name; ?></td>

@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 require("../includes/errors.php");
 require("../includes/authentication.php");
+require("../includes/authorization.php");
 require("../includes/database.php");
 require("../includes/request.php");
 require("../includes/template.php");
+
+ab_auth_assert_authorized("ListActions");
 
 function ab_render_actions(array $actions, int $page, int $page_size, int $total_page, string $url): void
 {

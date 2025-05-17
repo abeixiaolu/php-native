@@ -1,5 +1,7 @@
 <?php
 extract($user);
+
+$can_edit = (ab_auth_is_authorized("UpdateUser") && $user['id'] > 0) || (ab_auth_is_authorized("CreateUser") && $user['id'] === 0);
 ?>
 
 <main>
@@ -35,7 +37,9 @@ extract($user);
             <?php endif ?>
         </div>
         <div>
-            <button type="submit">Submit</button>
+            <?php if ($can_edit): ?>
+                <button type="submit">Submit</button>
+            <?php endif; ?>
             <a href="/users"><button type="button" class="secondary"> Cancel</button></a>
         </div>
     </form>
@@ -64,7 +68,9 @@ extract($user);
                                         <input type="hidden" name="action" value="delete_role">
                                         <input type="hidden" name="id" value="<?= $user['id'] ?>">
                                         <input type="hidden" name="role_id" value="<?= $role_id ?>">
-                                        <button link type="submit">Remove</button>
+                                        <?php if ($can_edit): ?>
+                                            <button link type="submit">Remove</button>
+                                        <?php endif; ?>
                                     </form>
                                 </td>
                             </tr>
@@ -91,7 +97,9 @@ extract($user);
                         <?php endif; ?>
                     </select>
                 </div>
-                <button type="submit" <?= count($other_roles) === 0 ? 'disabled' : '' ?>>Add</button>
+                <?php if ($can_edit): ?>
+                    <button type="submit" <?= count($other_roles) === 0 ? 'disabled' : '' ?>>Add</button>
+                <?php endif; ?>
             </form>
         </div>
     <?php endif; ?>
