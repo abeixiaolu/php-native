@@ -9,29 +9,30 @@ $can_read = true;
         <tr>
           <th>#</th>
           <th>Name</th>
-          <th>Action</th>
+          <th class="table-action">Action</th>
         </tr>
       </thead>
       <tbody>
         <?php foreach ($categories as $category): ?>
-          <?php extract($category, EXTR_OVERWRITE | EXTR_PREFIX_ALL, 'category'); ?>
           <tr>
-            <td><?= $category_id; ?></td>
+            <td><?= $category['id']; ?></td>
             <td>
               <?php if ($can_read): ?>
-                <a href="/category/<?= $category_id; ?>">
-                  <?= $category_depth > 0 ? str_repeat("&emsp;", $category_depth - 1) . "\u{2514}" : "" ?>
-                  <?= $category_name; ?>
+                <a href="/category/<?= $category['id']; ?>">
+                  <?= $category['depth'] > 0 ? str_repeat("&emsp;", $category['depth'] - 1) . "\u{2514}" : "" ?>
+                  <?= $category['name']; ?>
                 </a>
               <?php else: ?>
-                <?= $category_name; ?>
+                <?= $category['name']; ?>
               <?php endif; ?>
             </td>
-            <td align="right">
-              <form class="hidden" method="POST" action="/category/<?= $category['id'] ?>">
+            <td class="table-action">
+              <form style="display: inline-block;" class="hidden" method="POST" action="/category/<?= $category['id'] ?>">
+                <input type="hidden" name="action" value="delete" />
                 <input type="hidden" name="id" value="<?= $category['id'] ?>" />
-                <button link type="submit" <?= $category['depth'] == 0 ? "disabled" : "" ?>>
-                  <i class="icon si-plus-square"></i>
+                <?php $can_delete = $category['rgt'] == $category['lft'] + 1; ?>
+                <button link type="submit" <?= $can_delete ? "" : "disabled" ?>>
+                  <i class="icon si-trash"></i>
                 </button>
               </form>
             </td>

@@ -252,3 +252,4 @@
 1. category need `$categories` to show select options
 2. category need `$parent_id` to select parent category
 3. category update name
+4. delete category and create category

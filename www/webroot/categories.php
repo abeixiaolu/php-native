@@ -19,6 +19,8 @@ $connection = ab_database_get_connection();
 $statement = $connection->prepare("SELECT
     node.id,
     node.name,
+    node.lft,
+    node.rgt,
     (COUNT(parent.id) - 1) AS depth
    FROM
     categories AS node,
