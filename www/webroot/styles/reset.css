@@ -76,3 +76,14 @@ h6 {
 #__next {
   isolation: isolate;
 }
+
+
+select {
+  appearance: base-select;
+  line-height: 30px;
+
+  &::picker-icon {
+    color: var(--color-fg);
+    margin-right: 0.3em;
+  }
+}

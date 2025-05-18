@@ -47,3 +47,10 @@ function ab_database_is_unique_actionname(PDO $connection, string $name, int $us
   $statement->execute(['name' => $name, 'id' => $user_id]);
   return $statement->fetchColumn() === 0;
 }
+
+function ab_database_is_unique_category_name(PDO $connection, string $name, int $category_id): bool
+{
+  $statement = $connection->prepare('SELECT count(*) FROM categories WHERE name = :name AND id <> :id');
+  $statement->execute(['name' => $name, 'id' => $category_id]);
+  return $statement->fetchColumn() === 0;
+}

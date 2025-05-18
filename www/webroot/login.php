@@ -56,7 +56,7 @@ if (ab_request_is_method('POST')) {
                 $statement->bindValue(":user_id", $user["id"], PDO::PARAM_INT);
                 $statement->execute();
                 $_SESSION["actions"] = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
-                ab_request_redirect("/users");
+                ab_request_redirect("/categories");
             } else {
                 $auth_error = "Incorrect username or password";
             }

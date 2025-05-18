@@ -9,6 +9,10 @@ button,
   border-radius: var(--rounded);
   cursor: pointer;
 
+  .icon {
+    margin-right: 0.3em;
+  }
+
   &:hover {
     opacity: 0.8;
   }

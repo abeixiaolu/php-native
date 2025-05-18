@@ -5,6 +5,7 @@ $can_edit = (ab_auth_is_authorized("UpdateAction") && $action['id'] > 0) || (ab_
 ?>
 
 <main>
+    <h3>Action Details</h3>
     <form method="post">
         <input type="hidden" name="id" value="<?= $action['id'] ?>">
         <div <?= isset($errors['name']) ? 'class="has-error"' : '' ?>"'>

@@ -144,3 +144,22 @@ function ab_validate_login_password(string $password, string $field_name): ?stri
 
     return null;
 }
+
+function ab_validate_category_name(string $category_name, string $field_name): ?string
+{
+    $length = mb_strlen($category_name);
+
+    if ($length === 0) {
+        return "$field_name is required";
+    }
+
+    if ($length < 4 || $length > 64) {
+        return "$field_name length must be between 4 and 64 characters";
+    }
+
+    if (preg_match("/^[[:alpha:][:space:]]+$/u", $category_name) !== 1) {
+        return "$field_name can have only letters and space character";
+    }
+
+    return null;
+}

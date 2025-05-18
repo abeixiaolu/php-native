@@ -69,7 +69,7 @@ body {
     list-style: none;
 
     li {
-      padding: 0.2em 1em;
+      padding: 0.4em 1em;
       border-radius: var(--rounded);
       margin: 0.4em 0;
       display: flex;
@@ -87,11 +87,6 @@ body {
 
       a {
         color: var(--color-fg);
-
-        &:last-child {
-          font-size: 1.5em;
-          margin-bottom: 2px;
-        }
       }
     }
   }

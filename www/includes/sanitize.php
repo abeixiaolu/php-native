@@ -37,3 +37,8 @@ function ab_sanitize_password(string $password): string
 {
     return mb_trim($password);
 }
+
+function ab_sanitize_category_name(string $category_name): string
+{
+    return mb_trim($category_name);
+}
