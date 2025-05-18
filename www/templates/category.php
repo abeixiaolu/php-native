@@ -1,0 +1,3 @@
+<main>
+    <h1>Edit Category</h1>
+</main>

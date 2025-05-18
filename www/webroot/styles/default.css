@@ -34,7 +34,6 @@ body {
   display: flex;
   gap: 20px;
   max-width: 60em;
-  font-family: sans-serif;
   margin: 0 auto;
   padding: 1em;
   background-color: var(--color-bg);
@@ -43,9 +42,17 @@ body {
 
 .sidebar {
   padding: 1em;
+  width: 200px;
   background-color: var(--color-bg-alt);
   border-radius: var(--rounded);
   position: relative;
+
+  .sidebar-title {
+    padding: 0;
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-bottom: 0.6em;
+  }
 
   .sidebar-footer {
     position: absolute;

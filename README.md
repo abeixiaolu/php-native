@@ -184,3 +184,40 @@
 2. login session add `actions`
 3. add `authorization.php` to check if the user has the permission to access the page
 4. for each page, add authorization check
+
+## part 13
+
+> [Managing Hierarchical Data in MySQL](https://mikehillyer.com/articles/managing-hierarchical-data-in-mysql/)
+
+1. add `categories` table
+
+   ```sql
+   CREATE TABLE categories (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL,
+    name VARCHAR(64) NOT NULL UNIQUE,
+    lft BIGINT UNSIGNED NOT NULL,
+    rgt BIGINT UNSIGNED NOT NULL,
+    UNIQUE KEY (lft, rgt)
+   );
+
+   INSERT INTO categories (name, lft, rgt) VALUES ('Computers', 1, 14), ('Computer parts', 2, 7), ('Peripherals', 8, 13), ('Processors', 3, 4), ('Memory', 5, 6), ('Keyboards', 9, 10), ('Mouse', 11, 12);
+   ```
+
+2. query categories: 核心思路： 一个节点的深度，等于它有多少个祖先节点。在嵌套集模型中，如果节点 P 是节点 N 的祖先，那么 P.lft < N.lft 并且 P.rgt > N.rgt。我们可以通过将表自身连接（self-join）来实现：对于每个节点（我们称之为 node），我们去计算有多少个其他节点（我们称之为 parent）符合祖先的条件。
+   ```sql
+   SELECT
+    node.name AS category_name,
+    node.lft, -- 可选，方便查看
+    node.rgt, -- 可选，方便查看
+    (COUNT(parent.id) - 1) AS depth -- 减1是因为每个节点自身也会满足 P.lft <= N.lft AND P.rgt >= N.rgt (如果用 <= >=)
+                                    -- 或者更准确地，计算严格祖先的数量
+   FROM
+    categories AS node,
+    categories AS parent
+   WHERE
+    node.lft BETWEEN parent.lft AND parent.rgt -- 关键：node 在 parent 的区间内
+   GROUP BY
+    node.id, node.name, node.lft, node.rgt -- 确保每个 node 只有一行
+   ORDER BY
+    node.lft; -- 按 lft 排序，结果会按层级顺序显示
+   ```
